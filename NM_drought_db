@@ -1,0 +1,42 @@
+# Challenge 3 (take home) -------------------------------------------------
+# Make a data base with at least 3 variables using SQRLite, variables should be relational
+
+# Load libraries ----------------------------------------------------------
+
+#.libPaths("NRES 800/dataBases/")
+
+# usethis::edit_r_profile() 
+# install.packages(c("dbplyr", "RSQLite"))
+
+library(tidyverse)
+library(dbplyr)
+library(RSQLite)
+
+
+# Read in the data -------------------------------------------------------
+
+statePDSI <- read_csv("https://raw.githubusercontent.com/ljohns518/NRES-800/master/state_pdsi_2000-2017.csv")
+stateDSCI <- read_csv("https://raw.githubusercontent.com/ljohns518/NRES-800/master/state_dsci_2000-2017.csv")
+stateSCPDSI <- read_csv("https://raw.githubusercontent.com/ljohns518/NRES-800/master/state_scPDSI_2000-2017.csv")
+statePalmerZ <- read_csv("https://raw.githubusercontent.com/ljohns518/NRES-800/master/state_palmerZ_2000-2017.csv")
+  
+
+# Creating a new database -------------------------------------------------
+
+New_Mexico_drought_db <- "data/NM_drought_db.sqlite"
+
+NM_db <- dbConnect (RSQLite::SQLite(), New_Mexico_drought_db)
+# dbDisconnect(mydb)
+# unlink(mytest-database.sqlite)
+
+dbWriteTable(NM_db, "PDSI", statePDSI)
+dbWriteTable(NM_db, "DSCI", stateDSCI)
+dbWriteTable(NM_db, "sc_PDSI", stateSCPDSI)
+dbWriteTable(NM_db, "PalmerZ", statePalmerZ)
+
+dbListFields(NM_db, "PDSI")
+dbListTables(NM_db)
+
+
+
+
